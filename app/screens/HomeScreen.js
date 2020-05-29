@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import {
   View,
   StyleSheet,
   Text,
   TextInput,
   TouchableWithoutFeedback,
-  Keyboard,
   TouchableOpacity,
   Button,
 } from "react-native";

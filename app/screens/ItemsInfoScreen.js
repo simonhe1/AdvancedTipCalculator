@@ -6,7 +6,7 @@ import colors from "../config/colors";
 
 const ItemsInfoScreen = ({ route, navigation }) => {
   const { numberOfItems, usersData } = route.params;
-  const [itemsData, setItemsData] = useState([{}]);
+  const [itemsData, setItemsData] = useState([]);
 
   useEffect(() => {
     let itemsArr = [];
