@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { View, StyleSheet, Button } from "react-native";
 import { KeyboardAwareFlatList } from "react-native-keyboard-aware-scroll-view";
 import Item from "../components/Item";
@@ -7,6 +7,8 @@ import colors from "../config/colors";
 const ItemsInfoScreen = ({ route, navigation }) => {
   const { numberOfItems, usersData } = route.params;
   const [itemsData, setItemsData] = useState([]);
+  const itemInfoRefs = {};
+  const nextButtonRef = useRef(null);
 
   useEffect(() => {
     let itemsArr = [];
@@ -70,6 +72,22 @@ const ItemsInfoScreen = ({ route, navigation }) => {
     return mapping;
   };
 
+  const handleFocus = (id) => {
+    // If end of inputs, just press next button
+    if (id == numberOfItems) {
+      nextButtonRef.current.props.onPress(() => {
+        const mapping = mapUsersToItems();
+        navigation.navigate("User", {
+          mapping,
+          mappingIndex: 0,
+          itemsData,
+        });
+      });
+    } else {
+      itemInfoRefs[id].focus();
+    }
+  };
+
   return (
     <View style={styles.container}>
       <KeyboardAwareFlatList
@@ -82,6 +100,8 @@ const ItemsInfoScreen = ({ route, navigation }) => {
             id={item.id}
             onPriceChange={onPriceChange}
             onNameChange={onNameChange}
+            handleFocus={handleFocus}
+            itemInfoRefs={itemInfoRefs}
           />
         )}
       />

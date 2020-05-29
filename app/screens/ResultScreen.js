@@ -1,9 +1,10 @@
 import React, { useLayoutEffect, useEffect, useState } from "react";
-import { View, Text, StyleSheet, Slider } from "react-native";
+import { View, Text, StyleSheet, Slider, Button } from "react-native";
 import colors from "../config/colors";
 import { Container, Content, Accordion } from "native-base";
 import UserResultsHeader from "../components/UserResultsHeader";
 import UserResultsContent from "../components/UserResultsContent";
+import { StackActions } from "react-navigation";
 
 const ResultScreen = ({ route, navigation }) => {
   const { mapping, itemsData } = route.params;
@@ -24,6 +25,15 @@ const ResultScreen = ({ route, navigation }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       title: "Results",
+      headerRight: () => (
+        <Button
+          onPress={() => {
+            navigation.popToTop();
+          }}
+          title="Done"
+          color={colors.blue}
+        />
+      ),
     });
   });
 

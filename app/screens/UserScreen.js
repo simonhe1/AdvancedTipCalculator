@@ -78,15 +78,12 @@ const UserScreen = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    backgroundColor: "skyblue",
   },
   choicesContainer: {
     flex: 2,
-    backgroundColor: "lime",
   },
   statementContainer: {
     flex: 1,
-    backgroundColor: "yellow",
     justifyContent: "center",
     alignItems: "center",
   },

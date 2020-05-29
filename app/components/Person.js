@@ -2,9 +2,14 @@ import React, { useEffect } from "react";
 import { View, StyleSheet, Text, TextInput } from "react-native";
 import { Octicons } from "@expo/vector-icons";
 
-const Person = ({ id, handleChange }) => {
+const Person = ({ id, handleChange, userInfoRefs, handleFocus }) => {
   const updateName = (name) => {
     handleChange(name, id);
+  };
+
+  const focusNextInput = () => {
+    let nextNum = Number(id) + 1;
+    handleFocus(nextNum);
   };
 
   return (
@@ -14,10 +19,13 @@ const Person = ({ id, handleChange }) => {
       </View>
       <View style={styles.nameContainer}>
         <TextInput
+          ref={(ref) => (userInfoRefs[id] = ref)}
           style={styles.textContainer}
           autoFocus={id === "0"}
           placeholder="Name"
           onChangeText={(text) => updateName(text)}
+          onSubmitEditing={() => focusNextInput()}
+          blurOnSubmit={false}
         />
       </View>
     </View>

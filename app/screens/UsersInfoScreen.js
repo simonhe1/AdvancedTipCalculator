@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { View, StyleSheet, Button } from "react-native";
 import { KeyboardAwareFlatList } from "react-native-keyboard-aware-scroll-view";
 import Person from "../components/Person";
@@ -7,6 +7,8 @@ import colors from "../config/colors";
 const UsersInfoScreen = ({ route, navigation }) => {
   const { numberOfItems, numberOfPeople } = route.params;
   const [usersData, setUsersData] = useState([]);
+  const userInfoRefs = {};
+  const nextButtonRef = useRef(null);
 
   useEffect(() => {
     let usersArr = [];
@@ -22,6 +24,7 @@ const UsersInfoScreen = ({ route, navigation }) => {
       title: "Users",
       headerRight: () => (
         <Button
+          ref={nextButtonRef}
           onPress={() =>
             navigation.navigate("Items", {
               usersData: usersData,
@@ -42,6 +45,20 @@ const UsersInfoScreen = ({ route, navigation }) => {
     );
   };
 
+  const handleFocus = (id) => {
+    // If end of inputs, just press next button
+    if (id == numberOfPeople) {
+      nextButtonRef.current.props.onPress(
+        navigation.navigate("Items", {
+          usersData: usersData,
+          numberOfItems: Number(numberOfItems),
+        })
+      );
+    } else {
+      userInfoRefs[id].focus();
+    }
+  };
+
   return (
     <View style={styles.container}>
       <KeyboardAwareFlatList
@@ -49,7 +66,12 @@ const UsersInfoScreen = ({ route, navigation }) => {
         keyExtractor={(item, index) => `${index}`}
         data={usersData}
         renderItem={({ item }) => (
-          <Person id={item.id} handleChange={handleChange} />
+          <Person
+            id={item.id}
+            userInfoRefs={userInfoRefs}
+            handleChange={handleChange}
+            handleFocus={handleFocus}
+          />
         )}
       />
     </View>

@@ -2,9 +2,15 @@ import React from "react";
 import { View, StyleSheet, TextInput } from "react-native";
 import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
 
-const Item = ({ price, id, onNameChange, onPriceChange }) => {
+const Item = ({ price, id, itemInfoRefs, onNameChange, onPriceChange }) => {
+  const priceRef = {};
   const handleNameChange = (name) => {
     onNameChange(name, id);
+  };
+
+  const focusNextInput = () => {
+    let nextNum = Number(id) + 1;
+    handleFocus(nextNum);
   };
 
   const handlePriceChange = (amount) => {
@@ -28,6 +34,10 @@ const Item = ({ price, id, onNameChange, onPriceChange }) => {
     }
   };
 
+  const focusNextPriceInput = () => {
+    priceRef[id].focus();
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.itemContainer}>
@@ -40,6 +50,7 @@ const Item = ({ price, id, onNameChange, onPriceChange }) => {
           autoFocus={id === "0"}
           placeholder="Item Name"
           onChangeText={(text) => handleNameChange(text)}
+          onSubmitEditing={() => focusNextPriceInput()}
         />
       </View>
       <View style={styles.priceContainer}>
@@ -47,11 +58,16 @@ const Item = ({ price, id, onNameChange, onPriceChange }) => {
           <FontAwesome5 name="dollar-sign" size={32} />
         </View>
         <TextInput
+          ref={(ref) => {
+            itemInfoRefs[id] = ref;
+            priceRef[id] = ref;
+          }}
           keyboardType="decimal-pad"
           style={styles.textContainer}
           value={String(price)}
           contextMenuHidden={true}
           onChangeText={(text) => handlePriceChange(text)}
+          onSubmitEditing={() => focusNextInput()}
         />
       </View>
     </View>
