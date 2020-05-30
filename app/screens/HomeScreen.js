@@ -9,9 +9,12 @@ import {
   Button,
 } from "react-native";
 import colors from "../config/colors";
+import { useNavigation } from "@react-navigation/native";
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = () => {
   const [numberOfPeople, setNumberOfPeople] = useState("2");
+  const navigation = useNavigation();
+
   const handleChange = (value) => {
     let number = Number(value);
     // Checks if user entered an actual number. If not make it blank

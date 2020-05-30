@@ -3,12 +3,15 @@ import { View, StyleSheet, Button } from "react-native";
 import { KeyboardAwareFlatList } from "react-native-keyboard-aware-scroll-view";
 import Person from "../components/Person";
 import colors from "../config/colors";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
-const UsersInfoScreen = ({ route, navigation }) => {
+const UsersInfoScreen = () => {
   const { numberOfItems, numberOfPeople } = route.params;
   const [usersData, setUsersData] = useState([]);
   const userInfoRefs = {};
   const nextButtonRef = useRef(null);
+  const navigation = useNavigation();
+  const route = useRoute();
 
   useEffect(() => {
     let usersArr = [];

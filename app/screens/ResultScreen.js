@@ -4,7 +4,6 @@ import colors from "../config/colors";
 import { Container, Content, Accordion } from "native-base";
 import UserResultsHeader from "../components/UserResultsHeader";
 import UserResultsContent from "../components/UserResultsContent";
-import { StackActions } from "react-navigation";
 
 const ResultScreen = ({ route, navigation }) => {
   const { mapping, itemsData } = route.params;

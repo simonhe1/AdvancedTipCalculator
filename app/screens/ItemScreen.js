@@ -9,9 +9,13 @@ import {
   Text,
 } from "react-native";
 import colors from "../config/colors";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
-const ItemScreen = ({ route, navigation }) => {
+const ItemScreen = () => {
   const [numberOfItems, setNumberOfItems] = useState("1");
+  const navigation = useNavigation();
+  const route = useRoute();
+
   const handleChange = (value) => {
     let number = Number(value);
     // Checks if user entered an actual number. If not, make it blank

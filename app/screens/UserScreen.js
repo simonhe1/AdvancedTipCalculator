@@ -2,11 +2,14 @@ import React, { useLayoutEffect, useEffect, useState } from "react";
 import { View, Text, StyleSheet, FlatList, Button } from "react-native";
 import { CheckBox } from "react-native-elements";
 import colors from "../config/colors";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
-const UserScreen = ({ route, navigation }) => {
+const UserScreen = () => {
   const { mapping, mappingIndex, itemsData } = route.params;
   const user = mapping[mappingIndex];
   const [options, setOptions] = useState([]);
+  const navigation = useNavigation();
+  const route = useRoute();
 
   useEffect(() => {
     const { data } = user;
