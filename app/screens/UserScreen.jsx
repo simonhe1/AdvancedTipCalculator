@@ -5,11 +5,11 @@ import colors from "../config/colors";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 const UserScreen = () => {
-  const { mapping, mappingIndex, itemsData } = route.params;
-  const user = mapping[mappingIndex];
   const [options, setOptions] = useState([]);
   const navigation = useNavigation();
   const route = useRoute();
+  const { mapping, mappingIndex, itemsData } = route.params;
+  const user = mapping[mappingIndex];
 
   useEffect(() => {
     const { data } = user;

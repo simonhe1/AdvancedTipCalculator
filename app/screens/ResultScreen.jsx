@@ -4,11 +4,19 @@ import colors from "../config/colors";
 import { Container, Content, Accordion } from "native-base";
 import UserResultsHeader from "../components/UserResultsHeader";
 import UserResultsContent from "../components/UserResultsContent";
+import {
+  useNavigation,
+  useRoute,
+  useNavigationState,
+} from "@react-navigation/native";
 
-const ResultScreen = ({ route, navigation }) => {
-  const { mapping, itemsData } = route.params;
+const ResultScreen = () => {
   const [usersMapping, setUsersMapping] = useState([]);
   const [tipValue, setTipValue] = useState(15);
+  const navigation = useNavigation();
+  const route = useRoute();
+  const state = useNavigationState((state) => state.routes);
+  const { mapping, itemsData } = route.params;
 
   useEffect(() => {
     let itemsDataCopy = [...itemsData];

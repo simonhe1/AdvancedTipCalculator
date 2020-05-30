@@ -6,12 +6,12 @@ import colors from "../config/colors";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 const ItemsInfoScreen = () => {
-  const { numberOfItems, usersData } = route.params;
   const [itemsData, setItemsData] = useState([]);
   const itemInfoRefs = {};
   const nextButtonRef = useRef(null);
   const navigation = useNavigation();
   const route = useRoute();
+  const { numberOfItems, usersData } = route.params;
 
   useEffect(() => {
     let itemsArr = [];
