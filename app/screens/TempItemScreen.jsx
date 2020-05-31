@@ -1,5 +1,6 @@
 import React, { useLayoutEffect, useRef, useEffect } from "react";
 import {
+  Text,
   TextInput,
   StyleSheet,
   KeyboardAvoidingView,
@@ -9,20 +10,18 @@ import {
   Keyboard,
   Platform,
 } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import colors from "../config/colors";
 import { connect } from "react-redux";
-import { addUser } from "../actions/users";
-import Person from "../components/Person";
+import { addItem } from "../actions/items";
+import Item from "../components/Item";
 
-const TempUserScreen = ({ users, addUser, gradientColorsBackground }) => {
+const TempItemScreen = ({ items, addItem, gradientColorsBackground }) => {
   const navigation = useNavigation();
-  const route = useRoute();
   const flatListRef = useRef();
   const inputRef = useRef();
 
-  // console.log(users);
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
@@ -45,13 +44,13 @@ const TempUserScreen = ({ users, addUser, gradientColorsBackground }) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: "Users Page",
+      title: "Items Page",
       headerStyle: {
         backgroundColor: "transparent",
       },
       headerRight: () => (
         <Button
-          onPress={() => navigation.navigate("Items")}
+          onPress={() => navigation.navigate("")}
           title="Next"
           color={colors.blue}
         />
@@ -72,10 +71,10 @@ const TempUserScreen = ({ users, addUser, gradientColorsBackground }) => {
         >
           <FlatList
             ref={flatListRef}
-            style={styles.usersList}
-            data={users}
+            style={styles.itemsList}
+            data={items}
             keyExtractor={(item) => `${item.id}`}
-            renderItem={({ item }) => <Person name={item.name} id={item.id} />}
+            renderItem={({ item }) => <Text>Hi</Text>}
           />
           <TextInput
             ref={inputRef}
@@ -85,13 +84,13 @@ const TempUserScreen = ({ users, addUser, gradientColorsBackground }) => {
             placeholder="Add names here"
             placeholderTextColor={colors.purple}
             // selectionColor="transparent"
-            onSubmitEditing={({ nativeEvent: { text } }) => {
-              inputRef.current.clear();
-              addUser(text);
-              setTimeout(() => {
-                flatListRef.current.scrollToEnd({ animated: true });
-              }, 200);
-            }}
+            // onSubmitEditing={({ nativeEvent: { text } }) => {
+            //   inputRef.current.clear();
+            //   addItem(text);
+            //   setTimeout(() => {
+            //     flatListRef.current.scrollToEnd({ animated: true });
+            //   }, 200);
+            // }}
             autoCorrect={false}
           />
         </KeyboardAvoidingView>
@@ -124,7 +123,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
   },
-  usersList: {
+  itemsList: {
     flex: 1,
     width: "100%",
   },
@@ -132,7 +131,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    users: state.usersReducer.userList,
+    items: state.itemsReducer.itemList,
     gradientColorsBackground: state.gradientReducer.gradientColorsBackground,
     gradientColorsButton: state.gradientReducer.gradientColorsButton,
   };
@@ -140,8 +139,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addUser: (name) => dispatch(addUser(name)),
+    addItem: (name, price) => dispatch(addItem(name, price)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TempUserScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(TempItemScreen);

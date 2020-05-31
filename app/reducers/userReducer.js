@@ -1,13 +1,11 @@
 import { ADD_USER, DELETE_USER } from "../actions/types";
-import "react-native-get-random-values";
-// import { v4 as uuidv4 } from "uuid";
 
 const initialState = {
   userList: [],
 };
 
 const userReducer = (state = initialState, action) => {
-  const { type } = action;
+  const { type, id } = action;
   switch (type) {
     case ADD_USER:
       const { name } = action;
@@ -15,13 +13,13 @@ const userReducer = (state = initialState, action) => {
         ...state,
         userList: state.userList.concat({
           name,
-          id: uuidv4(),
+          id,
         }),
       };
     case DELETE_USER:
       return {
         ...state,
-        userList: state.userList.filter((item) => item.id !== id),
+        userList: state.userList.filter((user) => user.id !== id),
       };
     default:
       return state;

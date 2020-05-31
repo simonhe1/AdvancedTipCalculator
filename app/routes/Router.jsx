@@ -11,6 +11,7 @@ import ResultScreen from "../screens/ResultScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import TempScreen from "../screens/TempScreen";
 import TempUserScreen from "../screens/TempUserScreen";
+import TempItemScreen from "../screens/TempItemScreen";
 import { getRandomColor } from "../config/randomColor";
 
 const Router = (props) => {
@@ -47,6 +48,7 @@ const Router = (props) => {
           component={TempScreen}
         />
         <Stack.Screen name="Users" component={TempUserScreen} />
+        <Stack.Screen name="Items" component={TempItemScreen} />
       </Stack.Navigator>
     );
   };
