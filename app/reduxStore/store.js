@@ -1,8 +1,10 @@
 import { createStore, combineReducers } from "redux";
 import userReducer from "../reducers/userReducer";
+import gradientReducer from "../reducers/gradientReducer";
 
 const rootReducer = combineReducers({
-  users: userReducer,
+  usersReducer: userReducer,
+  gradientReducer: gradientReducer,
 });
 
 const configureStore = () => createStore(rootReducer);

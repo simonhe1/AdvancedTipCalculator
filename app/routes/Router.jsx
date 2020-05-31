@@ -9,10 +9,30 @@ import UsersInfoScreen from "../screens/UsersInfoScreen";
 import UserScreen from "../screens/UserScreen";
 import ResultScreen from "../screens/ResultScreen";
 import SettingsScreen from "../screens/SettingsScreen";
+import TempScreen from "../screens/TempScreen";
+import TempUserScreen from "../screens/TempUserScreen";
+import { getRandomColor } from "../config/randomColor";
 
 const Router = (props) => {
   const Stack = createStackNavigator();
   const Drawer = createDrawerNavigator();
+
+  // const createHomeStack = () => {
+  //   return (
+  //     <Stack.Navigator
+  //       screenOptions={{
+  //         gestureEnabled: false,
+  //       }}
+  //     >
+  //       <Stack.Screen name="UserCount" component={HomeScreen} />
+  //       <Stack.Screen name="ItemCount" component={ItemScreen} />
+  //       <Stack.Screen name="Users" component={UsersInfoScreen} />
+  //       <Stack.Screen name="Items" component={ItemsInfoScreen} />
+  //       <Stack.Screen name="User" component={UserScreen} />
+  //       <Stack.Screen name="Result" component={ResultScreen} />
+  //     </Stack.Navigator>
+  //   );
+  // };
 
   const createHomeStack = () => {
     return (
@@ -21,16 +41,15 @@ const Router = (props) => {
           gestureEnabled: false,
         }}
       >
-        <Stack.Screen name="UserCount" component={HomeScreen} />
-        <Stack.Screen name="ItemCount" component={ItemScreen} />
-        <Stack.Screen name="Users" component={UsersInfoScreen} />
-        <Stack.Screen name="Items" component={ItemsInfoScreen} />
-        <Stack.Screen name="User" component={UserScreen} />
-        <Stack.Screen name="Result" component={ResultScreen} />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Home"
+          component={TempScreen}
+        />
+        <Stack.Screen name="Users" component={TempUserScreen} />
       </Stack.Navigator>
     );
   };
-
   return (
     <NavigationContainer>
       <Drawer.Navigator>

@@ -1,9 +1,9 @@
 import { ADD_USER, DELETE_USER } from "./types";
 
-export const addUser = (user) => {
+export const addUser = (name) => {
   return {
     type: ADD_USER,
-    data: user,
+    name: name,
   };
 };
 

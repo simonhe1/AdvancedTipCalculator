@@ -3,11 +3,16 @@ import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { getRandomColor } from "../config/randomColor";
 import colors from "../config/colors";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { connect } from "react-redux";
 
-const TempScreen = () => {
+const TempScreen = ({ gradientColorsBackground }) => {
+  const navigation = useNavigation();
+  const route = useRoute();
+
   return (
     <LinearGradient
-      colors={Array.from(Array(2), () => getRandomColor())}
+      colors={gradientColorsBackground}
       style={styles.gradientContainer}
     >
       <View style={styles.titleContainer}>
@@ -19,7 +24,7 @@ const TempScreen = () => {
           colors={[getRandomColor(), getRandomColor()]}
           style={styles.buttonGradient}
         >
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Users")}>
             <Text style={styles.beginButtonText}>Begin</Text>
           </TouchableOpacity>
         </LinearGradient>
@@ -70,4 +75,10 @@ const styles = StyleSheet.create({
     fontFamily: "HoeflerText-Italic",
   },
 });
-export default TempScreen;
+const mapStateToProps = (state) => {
+  return {
+    gradientColorsBackground: state.gradientReducer.gradientColorsBackground,
+  };
+};
+
+export default connect(mapStateToProps)(TempScreen);
