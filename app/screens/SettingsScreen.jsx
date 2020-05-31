@@ -9,16 +9,7 @@ import {
 } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Tip from "../components/Tip";
-
-function getRandomColor() {
-  // Using the lighter colors of the spectrum so we can see text inside component
-  var letters = "ABCDEF";
-  var color = "#";
-  for (var i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 6)];
-  }
-  return color;
-}
+import { getRandomColor } from "../config/randomColor";
 
 function reOrderArray(arr, from, to) {
   return arr.reduce((prev, current, idx, self) => {

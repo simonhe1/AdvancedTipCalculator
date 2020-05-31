@@ -1,9 +1,16 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
-import { View, StyleSheet, Button } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Button,
+  Animated,
+  TouchableOpacity,
+} from "react-native";
 import { KeyboardAwareFlatList } from "react-native-keyboard-aware-scroll-view";
 import Person from "../components/Person";
 import colors from "../config/colors";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { Swipeable } from "react-native-gesture-handler";
 
 const UsersInfoScreen = () => {
   const [usersData, setUsersData] = useState([]);
@@ -62,6 +69,36 @@ const UsersInfoScreen = () => {
     }
   };
 
+  const deleteUser = (id) => {
+    setUsersData((prevState) => prevState.filter((item) => item.id !== id));
+  };
+
+  const swipeRight = (rightX, id) => {
+    const scale = rightX.interpolate({
+      inputRange: [-100, 0],
+      outputRange: [1, 0.9],
+      extrapolate: "clamp",
+    });
+
+    const opacity = rightX.interpolate({
+      inputRange: [-100, -20, 0],
+      outputRange: [1, 0.9, 0],
+      extrapolate: "clamp",
+    });
+
+    return (
+      <TouchableOpacity onPress={() => deleteUser(id)}>
+        <Animated.View style={[styles.animatedDeleteButton, { opacity }]}>
+          <Animated.Text
+            style={[styles.animatedDeleteText, { transform: [{ scale }] }]}
+          >
+            Delete
+          </Animated.Text>
+        </Animated.View>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <KeyboardAwareFlatList
@@ -69,12 +106,16 @@ const UsersInfoScreen = () => {
         keyExtractor={(item, index) => `${index}`}
         data={usersData}
         renderItem={({ item }) => (
-          <Person
-            id={item.id}
-            userInfoRefs={userInfoRefs}
-            handleChange={handleChange}
-            handleFocus={handleFocus}
-          />
+          <Swipeable
+            renderRightActions={(_, dragX) => swipeRight(dragX, item.id)}
+          >
+            <Person
+              id={item.id}
+              userInfoRefs={userInfoRefs}
+              handleChange={handleChange}
+              handleFocus={handleFocus}
+            />
+          </Swipeable>
         )}
       />
     </View>
@@ -89,6 +130,16 @@ const styles = StyleSheet.create({
   },
   usersList: {
     flex: 1,
+  },
+  animatedDeleteText: {
+    fontWeight: "800",
+    color: colors.white,
+  },
+  animatedDeleteButton: {
+    flex: 1,
+    backgroundColor: "red",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 export default UsersInfoScreen;

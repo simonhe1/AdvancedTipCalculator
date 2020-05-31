@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import colors from "../config/colors";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const HomeScreen = () => {
   const [numberOfPeople, setNumberOfPeople] = useState("2");
@@ -60,50 +61,55 @@ const HomeScreen = () => {
   });
 
   return (
-    // <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-    <TouchableWithoutFeedback>
-      <View style={styles.background}>
-        <View style={styles.whitespace}></View>
-        <View style={styles.userInteraction}>
-          <View style={styles.questionContainer}>
-            <Text style={styles.question}>How many people?</Text>
-          </View>
-          <View style={styles.answerContainer}>
-            <View style={styles.subtractContainer}>
-              <TouchableOpacity
-                style={styles.subtract}
-                onPress={() => subtractToNumber()}
-              >
-                <View>
-                  <Text style={styles.subtractText}>-</Text>
-                </View>
-              </TouchableOpacity>
+    <LinearGradient
+      colors={["#136a8a", "#267871"]}
+      style={styles.gradient}
+      // start={[0, 0.65]}
+    >
+      <TouchableWithoutFeedback>
+        <View style={styles.background}>
+          <View style={styles.whitespace}></View>
+          <View style={styles.userInteraction}>
+            <View style={styles.questionContainer}>
+              <Text style={styles.question}>How many people?</Text>
             </View>
-            <TextInput
-              keyboardType="number-pad"
-              onChangeText={(text) => handleChange(text)}
-              style={styles.input}
-              autoFocus={true}
-              contextMenuHidden={true}
-              value={String(numberOfPeople)}
-              maxLength={3}
-            />
-            <View style={styles.addContainer}>
-              <TouchableOpacity
-                style={styles.add}
-                onPress={() => addToNumber()}
-              >
-                <View>
-                  <Text style={styles.addText}>+</Text>
-                </View>
-              </TouchableOpacity>
+            <View style={styles.answerContainer}>
+              <View style={styles.subtractContainer}>
+                <TouchableOpacity
+                  style={styles.subtract}
+                  onPress={() => subtractToNumber()}
+                >
+                  <View>
+                    <Text style={styles.subtractText}>-</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <TextInput
+                keyboardType="number-pad"
+                onChangeText={(text) => handleChange(text)}
+                style={styles.input}
+                autoFocus={true}
+                contextMenuHidden={true}
+                value={String(numberOfPeople)}
+                maxLength={3}
+              />
+              <View style={styles.addContainer}>
+                <TouchableOpacity
+                  style={styles.add}
+                  onPress={() => addToNumber()}
+                >
+                  <View>
+                    <Text style={styles.addText}>+</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
+          <View style={styles.whitespace}></View>
+          <View style={styles.whitespace}></View>
         </View>
-        <View style={styles.whitespace}></View>
-        <View style={styles.whitespace}></View>
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </LinearGradient>
   );
 };
 const styles = StyleSheet.create({
@@ -137,6 +143,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     alignItems: "center",
     justifyContent: "center",
+  },
+  gradient: {
+    flex: 1,
   },
   input: {
     flex: 1,
