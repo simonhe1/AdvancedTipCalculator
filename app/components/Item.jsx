@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import { View, StyleSheet, TextInput } from "react-native";
 import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
+import { connect } from "react-redux";
+import { addItem } from "../actions/items";
 
-const Item = ({ price, id, itemInfoRefs, onNameChange, onPriceChange }) => {
-  const priceRef = {};
-  const handleNameChange = (name) => {
-    onNameChange(name, id);
-  };
+const Item = ({ price, id, items }) => {
+  const [itemPrice, setItemPrice] = useState();
 
-  const focusNextInput = () => {
-    let nextNum = Number(id) + 1;
-    handleFocus(nextNum);
+  const nameRef = useRef("");
+  const priceRef = useRef();
+
+  const focusNextInput = (name) => {
+    nameRef.current = name;
+    priceRef.current.focus();
   };
 
   const handlePriceChange = (amount) => {
@@ -47,10 +49,11 @@ const Item = ({ price, id, itemInfoRefs, onNameChange, onPriceChange }) => {
         <TextInput
           contextMenuHidden={true}
           style={styles.textContainer}
-          autoFocus={id === "0"}
+          autoFocus={id === 0}
           placeholder="Item Name"
-          onChangeText={(text) => handleNameChange(text)}
-          onSubmitEditing={() => focusNextPriceInput()}
+          onSubmitEditing={({ nativeEvent: { text } }) =>
+            focusNextPriceInput(text)
+          }
         />
       </View>
       <View style={styles.priceContainer}>
@@ -58,10 +61,7 @@ const Item = ({ price, id, itemInfoRefs, onNameChange, onPriceChange }) => {
           <FontAwesome5 name="dollar-sign" size={32} />
         </View>
         <TextInput
-          ref={(ref) => {
-            itemInfoRefs[id] = ref;
-            priceRef[id] = ref;
-          }}
+          ref={priceRef}
           keyboardType="decimal-pad"
           style={styles.textContainer}
           value={String(price)}
@@ -97,4 +97,19 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 });
-export default Item;
+const mapStateToProps = (state) => {
+  return {
+    items: state.itemsReducer.itemList,
+    gradientColorsBackground: state.gradientReducer.gradientColorsBackground,
+    gradientColorsButton: state.gradientReducer.gradientColorsButton,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addItem: (name, price, quantity) =>
+      dispatch(addItem(name, price, quantity)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Item);

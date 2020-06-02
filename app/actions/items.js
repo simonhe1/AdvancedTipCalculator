@@ -1,13 +1,40 @@
-import { ADD_ITEM, DELETE_ITEM } from "./types";
+import {
+  ADD_ITEM_NAME,
+  ADD_ITEM_PRICE,
+  GET_ITEM_NAME,
+  GET_ITEM_PRICE,
+  DELETE_ITEM,
+} from "./types";
 
 let nextItemId = 0;
 
-export const addItem = (name, price) => {
+export const addItemName = (name) => {
+  console.log(ADD_ITEM_NAME);
   return {
-    type: ADD_ITEM,
+    type: ADD_ITEM_NAME,
     name: name,
-    price: price,
     id: nextItemId++,
+  };
+};
+
+export const addItemPrice = (price) => {
+  return {
+    type: ADD_ITEM_PRICE,
+    price: price,
+  };
+};
+
+export const getItemName = (id) => {
+  return {
+    type: GET_ITEM_NAME,
+    id: id,
+  };
+};
+
+export const getItemPrice = (id) => {
+  return {
+    type: GET_ITEM_PRICE,
+    id: id,
   };
 };
 

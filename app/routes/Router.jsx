@@ -40,6 +40,7 @@ const Router = (props) => {
       <Stack.Navigator
         screenOptions={{
           gestureEnabled: false,
+          headerTransparent: true,
         }}
       >
         <Stack.Screen

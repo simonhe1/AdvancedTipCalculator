@@ -102,6 +102,7 @@ const TempUserScreen = ({ users, addUser, gradientColorsBackground }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 100,
     width: "100%",
   },
   gradientBackground: {

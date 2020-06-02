@@ -1,6 +1,5 @@
-import React, { useLayoutEffect, useRef, useEffect } from "react";
+import React, { useState, useLayoutEffect, useRef, useEffect } from "react";
 import {
-  Text,
   TextInput,
   StyleSheet,
   KeyboardAvoidingView,
@@ -14,14 +13,15 @@ import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import colors from "../config/colors";
 import { connect } from "react-redux";
-import { addItem } from "../actions/items";
+import { addItemName } from "../actions/items";
 import Item from "../components/Item";
 
-const TempItemScreen = ({ items, addItem, gradientColorsBackground }) => {
+const TempItemScreen = ({ items, gradientColorsBackground, addItemName }) => {
   const navigation = useNavigation();
   const flatListRef = useRef();
   const inputRef = useRef();
 
+  //   console.log(items);
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
@@ -74,7 +74,7 @@ const TempItemScreen = ({ items, addItem, gradientColorsBackground }) => {
             style={styles.itemsList}
             data={items}
             keyExtractor={(item) => `${item.id}`}
-            renderItem={({ item }) => <Text>Hi</Text>}
+            renderItem={({ item }) => <TextInput />}
           />
           <TextInput
             ref={inputRef}
@@ -83,15 +83,15 @@ const TempItemScreen = ({ items, addItem, gradientColorsBackground }) => {
             blurOnSubmit={false}
             placeholder="Add names here"
             placeholderTextColor={colors.purple}
-            // selectionColor="transparent"
-            // onSubmitEditing={({ nativeEvent: { text } }) => {
-            //   inputRef.current.clear();
-            //   addItem(text);
-            //   setTimeout(() => {
-            //     flatListRef.current.scrollToEnd({ animated: true });
-            //   }, 200);
-            // }}
             autoCorrect={false}
+            // selectionColor="transparent"
+            onSubmitEditing={({ nativeEvent: { text } }) => {
+              inputRef.current.clear();
+              addItemName(text);
+              // setTimeout(() => {
+              //   flatListRef.current.scrollToEnd({ animated: true });
+              // }, 200);
+            }}
           />
         </KeyboardAvoidingView>
       </SafeAreaView>
@@ -101,6 +101,7 @@ const TempItemScreen = ({ items, addItem, gradientColorsBackground }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 100,
     width: "100%",
   },
   gradientBackground: {
@@ -111,7 +112,6 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
-    backgroundColor: "transparent",
     width: "100%",
     borderStyle: "solid",
     paddingLeft: 10,
@@ -139,7 +139,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addItem: (name, price) => dispatch(addItem(name, price)),
+    addItemName: (name) => dispatch(addItemName(name)),
   };
 };
 
