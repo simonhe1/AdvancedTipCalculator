@@ -14,14 +14,13 @@ import { LinearGradient } from "expo-linear-gradient";
 import colors from "../config/colors";
 import { connect } from "react-redux";
 import { addItemName } from "../actions/items";
-import Item from "../components/Item";
+import ItemNameQuantity from "../components/ItemNameQuantity";
 
 const TempItemScreen = ({ items, gradientColorsBackground, addItemName }) => {
   const navigation = useNavigation();
   const flatListRef = useRef();
   const inputRef = useRef();
 
-  //   console.log(items);
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
@@ -74,7 +73,13 @@ const TempItemScreen = ({ items, gradientColorsBackground, addItemName }) => {
             style={styles.itemsList}
             data={items}
             keyExtractor={(item) => `${item.id}`}
-            renderItem={({ item }) => <TextInput />}
+            renderItem={({ item }) => (
+              <ItemNameQuantity
+                name={item.name}
+                quantity={item.quantity}
+                id={item.id}
+              />
+            )}
           />
           <TextInput
             ref={inputRef}

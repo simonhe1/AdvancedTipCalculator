@@ -1,6 +1,8 @@
 import {
   ADD_ITEM_NAME,
   ADD_ITEM_PRICE,
+  INCREMENT_ITEM_QUANTITY,
+  DECREMENT_ITEM_QUANTITY,
   GET_ITEM_NAME,
   GET_ITEM_PRICE,
   DELETE_ITEM,
@@ -9,11 +11,24 @@ import {
 let nextItemId = 0;
 
 export const addItemName = (name) => {
-  console.log(ADD_ITEM_NAME);
   return {
     type: ADD_ITEM_NAME,
     name: name,
     id: nextItemId++,
+  };
+};
+
+export const incrementItemQuantity = (id) => {
+  return {
+    type: INCREMENT_ITEM_QUANTITY,
+    id: id,
+  };
+};
+
+export const decrementItemQuantity = (id) => {
+  return {
+    type: DECREMENT_ITEM_QUANTITY,
+    id: id,
   };
 };
 

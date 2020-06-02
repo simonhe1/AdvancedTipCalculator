@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { View, StyleSheet, Button } from "react-native";
 import { KeyboardAwareFlatList } from "react-native-keyboard-aware-scroll-view";
-import Item from "../components/Item";
+import ItemNameQuantity from "../components/ItemNameQuantity";
 import colors from "../config/colors";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
@@ -98,7 +98,7 @@ const ItemsInfoScreen = () => {
         keyExtractor={(item, index) => `${index}`}
         data={itemsData}
         renderItem={({ item }) => (
-          <Item
+          <ItemNameQuantity
             price={item.price}
             id={item.id}
             onPriceChange={onPriceChange}
