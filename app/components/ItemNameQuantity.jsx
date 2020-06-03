@@ -24,36 +24,6 @@ const ItemNameQuantity = ({
   incrementItemQuantity,
   decrementItemQuantity,
 }) => {
-  const focusNextInput = (name) => {
-    nameRef.current = name;
-    priceRef.current.focus();
-  };
-
-  const handlePriceChange = (amount) => {
-    /*  
-        Checks whether new price matches regex that
-        Accepts     Rejects
-        244         10.895
-        10.89       alphabets
-        9.5         10.8.9
-        10.         9,85
-        0940.94     .85
-    */
-    let regex = /^\d+(\.\d{0,2})?$/;
-    const newPriceIsNum = regex.test(amount);
-    const oldPriceIsNum = regex.test(price);
-
-    if (newPriceIsNum || amount === "") {
-      onPriceChange(String(amount), id);
-    } else if (oldPriceIsNum) {
-      onPriceChange(String(price), id);
-    }
-  };
-
-  const focusNextPriceInput = () => {
-    priceRef[id].focus();
-  };
-
   const swipeRight = (rightX) => {
     const scale = rightX.interpolate({
       inputRange: [-100, 0],
@@ -155,14 +125,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-const mapStateToProps = (state) => {
-  return {
-    items: state.itemsReducer.itemList,
-    gradientColorsBackground: state.gradientReducer.gradientColorsBackground,
-    gradientColorsButton: state.gradientReducer.gradientColorsButton,
-  };
-};
-
 const mapDispatchToProps = (dispatch) => {
   return {
     incrementItemQuantity: (id) => dispatch(incrementItemQuantity(id)),
@@ -171,4 +133,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ItemNameQuantity);
+export default connect(null, mapDispatchToProps)(ItemNameQuantity);

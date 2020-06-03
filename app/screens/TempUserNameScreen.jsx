@@ -16,7 +16,7 @@ import { connect } from "react-redux";
 import { addUser } from "../actions/users";
 import Person from "../components/Person";
 
-const TempUserScreen = ({ users, addUser, gradientColorsBackground }) => {
+const TempUserNameScreen = ({ users, addUser, gradientColorsBackground }) => {
   const navigation = useNavigation();
   const route = useRoute();
   const flatListRef = useRef();
@@ -145,4 +145,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TempUserScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(TempUserNameScreen);

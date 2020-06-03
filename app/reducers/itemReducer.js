@@ -6,6 +6,7 @@ import {
   DELETE_ITEM,
   INCREMENT_ITEM_QUANTITY,
   DECREMENT_ITEM_QUANTITY,
+  MAP_ITEM_TO_USERS,
 } from "../actions/types";
 
 const initialState = {
@@ -41,8 +42,17 @@ const itemReducer = (state = initialState, action) => {
         itemList: decrementQuantity(id, state.itemList),
       };
     case ADD_ITEM_PRICE:
-      console.log("added price");
-      return state;
+      const { price } = action;
+      return {
+        ...state,
+        itemList: changePrice(id, price, state.itemList),
+      };
+    case MAP_ITEM_TO_USERS:
+      const { users } = action;
+      return {
+        ...state,
+        itemList: mapItems(state.itemList, users),
+      };
     case GET_ITEM_NAME:
       console.log("got item name");
       return state;
@@ -87,6 +97,7 @@ const addNewItem = (name, id, arr) => {
     name,
     id,
     quantity: 1,
+    price: "-1",
   });
 };
 
@@ -104,5 +115,34 @@ const decrementQuantity = (id, arr) => {
       return { ...item, quantity: newQuantity };
     }
     return { ...item };
+  });
+};
+
+const changePrice = (id, price, arr) => {
+  return arr.map((item) => {
+    if (item.id === id) {
+      if (price) {
+        return {
+          ...item,
+          price,
+        };
+      }
+      return {
+        ...item,
+        price: "-1",
+      };
+    }
+    return { ...item };
+  });
+};
+
+const mapItems = (itemsArr, usersArr) => {
+  return itemsArr.map((item) => {
+    return {
+      ...item,
+      data: usersArr.map(({ name, id }) => {
+        return { name, id, checked: false };
+      }),
+    };
   });
 };

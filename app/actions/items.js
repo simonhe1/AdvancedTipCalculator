@@ -6,6 +6,7 @@ import {
   GET_ITEM_NAME,
   GET_ITEM_PRICE,
   DELETE_ITEM,
+  MAP_ITEM_TO_USERS,
 } from "./types";
 
 let nextItemId = 0;
@@ -32,10 +33,11 @@ export const decrementItemQuantity = (id) => {
   };
 };
 
-export const addItemPrice = (price) => {
+export const addItemPrice = (price, id) => {
   return {
     type: ADD_ITEM_PRICE,
     price: price,
+    id: id,
   };
 };
 
@@ -57,5 +59,12 @@ export const deleteItem = (id) => {
   return {
     type: DELETE_ITEM,
     id: id,
+  };
+};
+
+export const mapItemToUsers = (userArr) => {
+  return {
+    type: MAP_ITEM_TO_USERS,
+    users: userArr,
   };
 };

@@ -10,9 +10,10 @@ import UserScreen from "../screens/UserScreen";
 import ResultScreen from "../screens/ResultScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import TempScreen from "../screens/TempScreen";
-import TempUserScreen from "../screens/TempUserScreen";
+import TempUserNameScreen from "../screens/TempUserNameScreen";
 import TempItemScreen from "../screens/TempItemScreen";
-import { getRandomColor } from "../config/randomColor";
+import TempItemPriceScreen from "../screens/TempItemPriceScreen";
+import TempUserSelectionScreen from "../screens/TempUserSelectionScreen";
 
 const Router = (props) => {
   const Stack = createStackNavigator();
@@ -48,8 +49,13 @@ const Router = (props) => {
           name="Home"
           component={TempScreen}
         />
-        <Stack.Screen name="Users" component={TempUserScreen} />
+        <Stack.Screen name="Users" component={TempUserNameScreen} />
         <Stack.Screen name="Items" component={TempItemScreen} />
+        <Stack.Screen name="ItemsPrices" component={TempItemPriceScreen} />
+        <Stack.Screen
+          name="UserSelection"
+          component={TempUserSelectionScreen}
+        />
       </Stack.Navigator>
     );
   };
