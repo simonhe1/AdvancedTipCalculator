@@ -7,6 +7,7 @@ import {
   GET_ITEM_PRICE,
   DELETE_ITEM,
   MAP_ITEM_TO_USERS,
+  CHANGE_ITEM_CHOICE,
 } from "./types";
 
 let nextItemId = 0;
@@ -66,5 +67,13 @@ export const mapItemToUsers = (userArr) => {
   return {
     type: MAP_ITEM_TO_USERS,
     users: userArr,
+  };
+};
+
+export const changeItemChoice = (itemID, userID) => {
+  return {
+    type: CHANGE_ITEM_CHOICE,
+    id: itemID,
+    userID: userID,
   };
 };

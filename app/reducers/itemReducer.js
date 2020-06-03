@@ -7,6 +7,7 @@ import {
   INCREMENT_ITEM_QUANTITY,
   DECREMENT_ITEM_QUANTITY,
   MAP_ITEM_TO_USERS,
+  CHANGE_ITEM_CHOICE,
 } from "../actions/types";
 
 const initialState = {
@@ -52,6 +53,12 @@ const itemReducer = (state = initialState, action) => {
       return {
         ...state,
         itemList: mapItems(state.itemList, users),
+      };
+    case CHANGE_ITEM_CHOICE:
+      const { userID } = action;
+      return {
+        ...state,
+        itemList: changeUserChoice(id, userID, state.itemList),
       };
     case GET_ITEM_NAME:
       console.log("got item name");
@@ -144,5 +151,23 @@ const mapItems = (itemsArr, usersArr) => {
         return { name, id, checked: false };
       }),
     };
+  });
+};
+
+const changeUserChoice = (itemID, userID, arr) => {
+  return arr.map((item) => {
+    if (item.id === itemID) {
+      const { data } = item;
+      return {
+        ...item,
+        data: data.map((user) => {
+          const { checked } = user;
+          return user.id === userID
+            ? { ...user, checked: !checked }
+            : { ...user };
+        }),
+      };
+    }
+    return { ...item };
   });
 };

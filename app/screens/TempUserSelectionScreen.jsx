@@ -5,14 +5,17 @@ import colors from "../config/colors";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { connect } from "react-redux";
-import { addItemName } from "../actions/items";
+import { changeItemChoice } from "../actions/items";
 
-const TempUserSelectionScreen = ({ items, gradientColorsBackground }) => {
+const TempUserSelectionScreen = ({
+  items,
+  gradientColorsBackground,
+  changeItemChoice,
+}) => {
   const navigation = useNavigation();
   const route = useRoute();
   const { mappingIndex } = route.params;
   const item = items[mappingIndex];
-  console.log(item);
   const { name, data } = item;
 
   useLayoutEffect(() => {
@@ -23,7 +26,16 @@ const TempUserSelectionScreen = ({ items, gradientColorsBackground }) => {
       },
       headerRight: () => (
         <Button
-          onPress={() => navigation.navigate("ItemsPrices")}
+          onPress={() => {
+            let finishedMapping = mappingIndex + 1 === items.length;
+            if (finishedMapping) {
+              console.log(items);
+            } else {
+              navigation.push("UserSelection", {
+                mappingIndex: mappingIndex + 1,
+              });
+            }
+          }}
           title="Next"
           color={colors.blue}
         />
@@ -48,7 +60,7 @@ const TempUserSelectionScreen = ({ items, gradientColorsBackground }) => {
               <CheckBox
                 title={item.name}
                 checked={item.checked}
-                // onPress={() => handlePress(item.id)}
+                onPress={() => changeItemChoice(mappingIndex, item.id)}
               />
             )}
           />
@@ -90,7 +102,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addItemName: (name) => dispatch(addItemName(name)),
+    changeItemChoice: (itemID, userID) =>
+      dispatch(changeItemChoice(itemID, userID)),
   };
 };
 
