@@ -1,32 +1,26 @@
-import React, { useLayoutEffect, useEffect, useState } from "react";
-import { View, Text, StyleSheet, Slider, Button } from "react-native";
+import React, { useLayoutEffect, useEffect } from "react";
+import { View, StyleSheet, Button } from "react-native";
 import colors from "../config/colors";
-import { Container, Content, Accordion } from "native-base";
+import { Container, Accordion } from "native-base";
 import UserResultsHeader from "../components/UserResultsHeader";
 import UserResultsContent from "../components/UserResultsContent";
-import {
-  useNavigation,
-  useRoute,
-  useNavigationState,
-} from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import { connect } from "react-redux";
+import { LinearGradient } from "expo-linear-gradient";
+import { mapUserToItems } from "../actions/users";
 
-const ResultScreen = () => {
-  const [usersMapping, setUsersMapping] = useState([]);
-  const [tipValue, setTipValue] = useState(15);
+const ResultScreen = ({
+  users,
+  items,
+  gradientColorsBackground,
+  mapUserToItems,
+  tip,
+  toggled,
+}) => {
   const navigation = useNavigation();
-  const route = useRoute();
-  const state = useNavigationState((state) => state.routes);
-  const { mapping, itemsData } = route.params;
 
   useEffect(() => {
-    let itemsDataCopy = [...itemsData];
-    let usersDataCopy = [...mapping];
-    itemsDataCopy.forEach((obj, index, itemsArr) => {
-      itemsArr[index] = { ...obj, users: [] };
-    });
-    assignUsersToItems(itemsDataCopy, usersDataCopy);
-    splitPrices(itemsDataCopy, usersDataCopy);
-    setUsersMapping(usersDataCopy);
+    mapUserToItems(items);
   }, []);
 
   useLayoutEffect(() => {
@@ -44,72 +38,29 @@ const ResultScreen = () => {
     });
   });
 
-  const assignUsersToItems = (itemsArr, usersArr) => {
-    for (let i = 0; i < itemsArr.length; i++) {
-      for (let j = 0; j < usersArr.length; j++) {
-        const { data } = usersArr[j];
-        for (let k = 0; k < data.length; k++) {
-          if (itemsArr[i].id === data[k].id) {
-            itemsArr[i].users.push(usersArr[j].name);
-          }
-        }
-      }
-    }
-  };
-
-  const splitPrices = (itemsArr, usersArr) => {
-    itemsArr.forEach((obj, index, arr) => {
-      const { price, users } = obj;
-      let newPrice = Number(Number(price) / users.length).toFixed(2);
-      arr[index] = { ...obj, price: `${newPrice}` };
-    });
-    assignPricesToUsers(itemsArr, usersArr);
-  };
-
-  const assignPricesToUsers = (itemsArr, usersArr) => {
-    for (let i = 0; i < itemsArr.length; i++) {
-      for (let j = 0; j < usersArr.length; j++) {
-        const { data } = usersArr[j];
-        for (let k = 0; k < data.length; k++) {
-          if (itemsArr[i].id === data[k].id) {
-            usersArr[j]["data"][k].price = itemsArr[i].price;
-          }
-        }
-      }
-    }
-  };
-
   return (
-    <View style={styles.background}>
-      <View style={styles.tipContainer}>
-        <Slider
-          style={styles.slider}
-          minimumValue={15} //
-          maximumValue={25}
-          step={1}
-          value={tipValue}
-          onValueChange={(value) => setTipValue(value)}
-        />
-        <Text>Tip: {tipValue}%</Text>
-      </View>
+    <LinearGradient
+      colors={gradientColorsBackground}
+      style={styles.gradientBackground}
+    >
       <Container style={styles.resultsContainer}>
-        <Content padder>
+        <View style={styles.viewContainer}>
           <Accordion
-            dataArray={usersMapping}
+            dataArray={users}
             renderHeader={(item, expanded) => (
               <UserResultsHeader
                 item={item}
                 expanded={expanded}
-                tipPercentage={tipValue}
+                tipPercentage={tip}
               />
             )}
             renderContent={(item) => (
-              <UserResultsContent item={item} tipPercentage={tipValue} />
+              <UserResultsContent item={item} tipPercentage={tip} />
             )}
           />
-        </Content>
+        </View>
       </Container>
-    </View>
+    </LinearGradient>
   );
 };
 const styles = StyleSheet.create({
@@ -117,8 +68,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
+  gradientBackground: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+  },
   resultsContainer: {
-    flex: 15,
+    flex: 1,
+    width: "100%",
+    backgroundColor: "transparent",
+    marginTop: 100,
   },
   slider: {
     flex: 1,
@@ -132,5 +92,24 @@ const styles = StyleSheet.create({
   tipText: {
     flex: 1,
   },
+  viewContainer: {
+    flex: 1,
+  },
 });
-export default ResultScreen;
+const mapStateToProps = (state) => {
+  return {
+    users: state.usersReducer.userList,
+    items: state.itemsReducer.itemList,
+    tip: state.tipReducer.tip,
+    toggled: state.tipReducer.toggled,
+    gradientColorsBackground: state.gradientReducer.gradientColorsBackground,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    mapUserToItems: (itemsArr) => dispatch(mapUserToItems(itemsArr)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ResultScreen);

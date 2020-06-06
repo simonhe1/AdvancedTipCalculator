@@ -9,20 +9,22 @@ import {
   Keyboard,
   Platform,
 } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import colors from "../config/colors";
 import { connect } from "react-redux";
-import { addUser } from "../actions/users";
-import Person from "../components/Person";
+import Item from "../components/Item";
+import { mapItemToUsers } from "../actions/items";
 
-const TempUserNameScreen = ({ users, addUser, gradientColorsBackground }) => {
+const ItemsPriceScreen = ({
+  items,
+  users,
+  gradientColorsBackground,
+  mapItemToUsers,
+}) => {
   const navigation = useNavigation();
-  const route = useRoute();
   const flatListRef = useRef();
-  const inputRef = useRef();
 
-  // console.log(users);
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
@@ -30,28 +32,23 @@ const TempUserNameScreen = ({ users, addUser, gradientColorsBackground }) => {
         flatListRef.current.scrollToEnd({ animated: true });
       }
     );
-    const keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      () => {
-        inputRef.current.clear();
-      }
-    );
-
     return () => {
-      keyboardDidHideListener.remove();
       keyboardDidShowListener.remove();
     };
   }, []);
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: "Users Page",
+      title: "Items Page",
       headerStyle: {
         backgroundColor: "transparent",
       },
       headerRight: () => (
         <Button
-          onPress={() => navigation.navigate("Items")}
+          onPress={() => {
+            mapItemToUsers(users);
+            navigation.navigate("UserSelection", { mappingIndex: 0 });
+          }}
           title="Next"
           color={colors.blue}
         />
@@ -72,27 +69,17 @@ const TempUserNameScreen = ({ users, addUser, gradientColorsBackground }) => {
         >
           <FlatList
             ref={flatListRef}
-            style={styles.usersList}
-            data={users}
+            style={styles.itemsList}
+            data={items}
             keyExtractor={(item) => `${item.id}`}
-            renderItem={({ item }) => <Person name={item.name} id={item.id} />}
-          />
-          <TextInput
-            ref={inputRef}
-            style={styles.input}
-            autoFocus={true}
-            blurOnSubmit={false}
-            placeholder="Add names here"
-            placeholderTextColor={colors.purple}
-            // selectionColor="transparent"
-            onSubmitEditing={({ nativeEvent: { text } }) => {
-              inputRef.current.clear();
-              addUser(text);
-              setTimeout(() => {
-                flatListRef.current.scrollToEnd({ animated: true });
-              }, 200);
-            }}
-            autoCorrect={false}
+            renderItem={({ item }) => (
+              <Item
+                name={item.name}
+                quantity={item.quantity}
+                id={item.id}
+                price={item.price}
+              />
+            )}
           />
         </KeyboardAvoidingView>
       </SafeAreaView>
@@ -113,7 +100,6 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
-    backgroundColor: "transparent",
     width: "100%",
     borderStyle: "solid",
     paddingLeft: 10,
@@ -125,7 +111,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
   },
-  usersList: {
+  itemsList: {
     flex: 1,
     width: "100%",
   },
@@ -134,15 +120,15 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     users: state.usersReducer.userList,
+    items: state.itemsReducer.itemList,
     gradientColorsBackground: state.gradientReducer.gradientColorsBackground,
-    gradientColorsButton: state.gradientReducer.gradientColorsButton,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addUser: (name) => dispatch(addUser(name)),
+    mapItemToUsers: (users) => dispatch(mapItemToUsers(users)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TempUserNameScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(ItemsPriceScreen);

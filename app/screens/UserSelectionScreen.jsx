@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import { View, Text, StyleSheet, FlatList, Button } from "react-native";
 import { CheckBox } from "react-native-elements";
 import colors from "../config/colors";
@@ -6,13 +6,11 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { connect } from "react-redux";
 import { changeItemChoice } from "../actions/items";
-import { mapUserToItems } from "../actions/users";
 
-const TempUserSelectionScreen = ({
+const UserSelectionScreen = ({
   items,
   gradientColorsBackground,
   changeItemChoice,
-  mapUserToItems,
 }) => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -98,7 +96,6 @@ const mapStateToProps = (state) => {
   return {
     items: state.itemsReducer.itemList,
     gradientColorsBackground: state.gradientReducer.gradientColorsBackground,
-    gradientColorsButton: state.gradientReducer.gradientColorsButton,
   };
 };
 
@@ -106,11 +103,10 @@ const mapDispatchToProps = (dispatch) => {
   return {
     changeItemChoice: (itemID, userID) =>
       dispatch(changeItemChoice(itemID, userID)),
-    mapUserToItems: (itemsArr) => dispatch(mapUserToItems(itemsArr)),
   };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TempUserSelectionScreen);
+)(UserSelectionScreen);

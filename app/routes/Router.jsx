@@ -2,40 +2,17 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import HomeScreen from "../screens/HomeScreen";
-import ItemScreen from "../screens/ItemScreen";
-import ItemsInfoScreen from "../screens/ItemsInfoScreen";
-import UsersInfoScreen from "../screens/UsersInfoScreen";
-import UserScreen from "../screens/UserScreen";
-import ResultScreen from "../screens/ResultScreen";
 import SettingsScreen from "../screens/SettingsScreen";
-import TempScreen from "../screens/TempScreen";
-import TempUserNameScreen from "../screens/TempUserNameScreen";
-import TempItemScreen from "../screens/TempItemScreen";
-import TempItemPriceScreen from "../screens/TempItemPriceScreen";
-import TempUserSelectionScreen from "../screens/TempUserSelectionScreen";
-import TempResultScreen from "../screens/TempResultScreen";
+import HomeScreen from "../screens/HomeScreen";
+import UsersScreen from "../screens/UsersScreen";
+import ItemsScreen from "../screens/ItemsScreen";
+import ItemsPriceScreen from "../screens/ItemsPriceScreen";
+import UserSelectionScreen from "../screens/UserSelectionScreen";
+import ResultScreen from "../screens/ResultScreen";
 
-const Router = (props) => {
+const Router = () => {
   const Stack = createStackNavigator();
   const Drawer = createDrawerNavigator();
-
-  // const createHomeStack = () => {
-  //   return (
-  //     <Stack.Navigator
-  //       screenOptions={{
-  //         gestureEnabled: false,
-  //       }}
-  //     >
-  //       <Stack.Screen name="UserCount" component={HomeScreen} />
-  //       <Stack.Screen name="ItemCount" component={ItemScreen} />
-  //       <Stack.Screen name="Users" component={UsersInfoScreen} />
-  //       <Stack.Screen name="Items" component={ItemsInfoScreen} />
-  //       <Stack.Screen name="User" component={UserScreen} />
-  //       <Stack.Screen name="Result" component={ResultScreen} />
-  //     </Stack.Navigator>
-  //   );
-  // };
 
   const createHomeStack = () => {
     return (
@@ -48,16 +25,13 @@ const Router = (props) => {
         <Stack.Screen
           options={{ headerShown: false }}
           name="Home"
-          component={TempScreen}
+          component={HomeScreen}
         />
-        <Stack.Screen name="Users" component={TempUserNameScreen} />
-        <Stack.Screen name="Items" component={TempItemScreen} />
-        <Stack.Screen name="ItemsPrices" component={TempItemPriceScreen} />
-        <Stack.Screen
-          name="UserSelection"
-          component={TempUserSelectionScreen}
-        />
-        <Stack.Screen name="Results" component={TempResultScreen} />
+        <Stack.Screen name="Users" component={UsersScreen} />
+        <Stack.Screen name="Items" component={ItemsScreen} />
+        <Stack.Screen name="ItemsPrices" component={ItemsPriceScreen} />
+        <Stack.Screen name="UserSelection" component={UserSelectionScreen} />
+        <Stack.Screen name="Results" component={ResultScreen} />
       </Stack.Navigator>
     );
   };

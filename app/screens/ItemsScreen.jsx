@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useRef, useEffect } from "react";
+import React, { useLayoutEffect, useRef, useEffect } from "react";
 import {
   TextInput,
   StyleSheet,
@@ -13,17 +13,13 @@ import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import colors from "../config/colors";
 import { connect } from "react-redux";
-import Item from "../components/Item";
-import { mapItemToUsers } from "../actions/items";
+import { addItemName } from "../actions/items";
+import ItemNameQuantity from "../components/ItemNameQuantity";
 
-const TempItemPriceScreen = ({
-  items,
-  users,
-  gradientColorsBackground,
-  mapItemToUsers,
-}) => {
+const ItemsScreen = ({ items, gradientColorsBackground, addItemName }) => {
   const navigation = useNavigation();
   const flatListRef = useRef();
+  const inputRef = useRef();
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -32,7 +28,15 @@ const TempItemPriceScreen = ({
         flatListRef.current.scrollToEnd({ animated: true });
       }
     );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        inputRef.current.clear();
+      }
+    );
+
     return () => {
+      keyboardDidHideListener.remove();
       keyboardDidShowListener.remove();
     };
   }, []);
@@ -45,10 +49,7 @@ const TempItemPriceScreen = ({
       },
       headerRight: () => (
         <Button
-          onPress={() => {
-            mapItemToUsers(users);
-            navigation.navigate("UserSelection", { mappingIndex: 0 });
-          }}
+          onPress={() => navigation.navigate("ItemsPrices")}
           title="Next"
           color={colors.blue}
         />
@@ -73,13 +74,28 @@ const TempItemPriceScreen = ({
             data={items}
             keyExtractor={(item) => `${item.id}`}
             renderItem={({ item }) => (
-              <Item
+              <ItemNameQuantity
                 name={item.name}
                 quantity={item.quantity}
                 id={item.id}
-                price={item.price}
               />
             )}
+          />
+          <TextInput
+            ref={inputRef}
+            style={styles.input}
+            autoFocus={true}
+            blurOnSubmit={false}
+            placeholder="Add names here"
+            placeholderTextColor={colors.purple}
+            autoCorrect={false}
+            onSubmitEditing={({ nativeEvent: { text } }) => {
+              inputRef.current.clear();
+              addItemName(text);
+              setTimeout(() => {
+                flatListRef.current.scrollToEnd({ animated: true });
+              }, 200);
+            }}
           />
         </KeyboardAvoidingView>
       </SafeAreaView>
@@ -119,20 +135,15 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    users: state.usersReducer.userList,
     items: state.itemsReducer.itemList,
     gradientColorsBackground: state.gradientReducer.gradientColorsBackground,
-    gradientColorsButton: state.gradientReducer.gradientColorsButton,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    mapItemToUsers: (users) => dispatch(mapItemToUsers(users)),
+    addItemName: (name) => dispatch(addItemName(name)),
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TempItemPriceScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(ItemsScreen);
