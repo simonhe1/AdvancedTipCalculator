@@ -4,18 +4,22 @@ import { StyleSheet } from "react-native";
 
 const UserResultsContent = ({ item, tipPercentage }) => {
   const { data } = item;
-  const [individualPrices, setIndividualPrices] = useState([]);
   const TAX = 0.08875;
 
-  useEffect(() => {
+  const calculateEachItem = () => {
+    let arr = intializePrices();
+    return renderIndividualPrices(arr);
+  };
+
+  const intializePrices = () => {
     let individualArr = [];
     data.forEach((obj) => {
       const { name, price, id } = obj;
       const newPrice = applyTaxAndTip(price);
       individualArr.push({ name, oldPrice: price, id, newPrice });
     });
-    setIndividualPrices(individualArr);
-  }, [tipPercentage]);
+    return individualArr;
+  };
 
   const applyTaxAndTip = (oldPrice) => {
     let newPrice = Number(oldPrice);
@@ -25,7 +29,7 @@ const UserResultsContent = ({ item, tipPercentage }) => {
     return newPrice;
   };
 
-  const renderIndividualPrices = () => {
+  const renderIndividualPrices = (individualPrices) => {
     let pricesArr = [];
     individualPrices.forEach((obj, index) => {
       pricesArr.push(
@@ -47,9 +51,7 @@ const UserResultsContent = ({ item, tipPercentage }) => {
     return pricesArr;
   };
 
-  return (
-    <View style={styles.contentContainer}>{renderIndividualPrices()}</View>
-  );
+  return <View style={styles.contentContainer}>{calculateEachItem()}</View>;
 };
 const styles = StyleSheet.create({
   contentContainer: {

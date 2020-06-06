@@ -6,11 +6,13 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { connect } from "react-redux";
 import { changeItemChoice } from "../actions/items";
+import { mapUserToItems } from "../actions/users";
 
 const TempUserSelectionScreen = ({
   items,
   gradientColorsBackground,
   changeItemChoice,
+  mapUserToItems,
 }) => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -29,7 +31,7 @@ const TempUserSelectionScreen = ({
           onPress={() => {
             let finishedMapping = mappingIndex + 1 === items.length;
             if (finishedMapping) {
-              console.log(items);
+              navigation.navigate("Results");
             } else {
               navigation.push("UserSelection", {
                 mappingIndex: mappingIndex + 1,
@@ -104,6 +106,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     changeItemChoice: (itemID, userID) =>
       dispatch(changeItemChoice(itemID, userID)),
+    mapUserToItems: (itemsArr) => dispatch(mapUserToItems(itemsArr)),
   };
 };
 

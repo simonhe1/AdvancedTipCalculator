@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Slider, Text } from "react-native";
+import { connect } from "react-redux";
+import { changeTip, toggleTip } from "../actions/tips";
 
-const Tip = (props) => {
-  const [tipValue, setTipValue] = useState(15);
-
+const Tip = ({ tip, changeTip, toggleTip }) => {
   return (
     <View style={styles.tipContainer}>
       <Slider
@@ -11,10 +11,10 @@ const Tip = (props) => {
         minimumValue={15}
         maximumValue={25}
         step={1}
-        value={tipValue}
-        onValueChange={(value) => setTipValue(value)}
+        value={tip}
+        onValueChange={(value) => changeTip(value)}
       />
-      <Text>Tip: {tipValue}%</Text>
+      <Text>Tip: {tip}%</Text>
     </View>
   );
 };
@@ -24,4 +24,18 @@ const styles = StyleSheet.create({
     padding: 16,
   },
 });
-export default Tip;
+const mapStateToProps = (state) => {
+  return {
+    tip: state.tipReducer.tip,
+    toggled: state.tipReducer.toggled,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changeTip: (tipAmount) => dispatch(changeTip(tipAmount)),
+    toggleTip: () => dispatch(toggleTip()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Tip);

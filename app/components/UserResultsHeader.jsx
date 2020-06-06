@@ -4,34 +4,35 @@ import { StyleSheet } from "react-native";
 
 const UserResultsHeader = ({ item, expanded, tipPercentage }) => {
   const { name, data } = item;
-  const [price, setPrice] = useState(0);
   const TAX = 0.08875;
 
-  useEffect(() => {
-    addUpPrices();
-  }, [tipPercentage]);
+  const calculateTotal = () => {
+    let totalPrice = 0;
+    totalPrice = addUpPrices(totalPrice);
+    totalPrice = applyTaxAndTip(totalPrice);
+    return totalPrice;
+  };
 
-  const addUpPrices = () => {
-    let sum = 0;
+  const addUpPrices = (sum) => {
     data.forEach((item) => {
       const { price } = item;
       sum += Number(price);
     });
     sum = Number(sum).toFixed(2);
-    setPrice(sum);
+    return sum;
   };
 
-  const applyTaxAndTip = () => {
-    let newPrice = Number(price);
+  const applyTaxAndTip = (price) => {
+    price = Number(price);
     const tip = Number((price * tipPercentage) / 100);
     const tax = Number(price * TAX);
-    newPrice = Number(newPrice + tax + tip).toFixed(2);
-    return newPrice;
+    price = Number(price + tax + tip).toFixed(2);
+    return price;
   };
 
   return (
     <View style={styles.header}>
-      <Text> {`${name} owes $${applyTaxAndTip()}`} </Text>
+      <Text> {`${name} owes $${calculateTotal()}`} </Text>
       {expanded ? <Icon name="remove-circle" /> : <Icon name="add-circle" />}
     </View>
   );

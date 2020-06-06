@@ -14,6 +14,7 @@ import TempUserNameScreen from "../screens/TempUserNameScreen";
 import TempItemScreen from "../screens/TempItemScreen";
 import TempItemPriceScreen from "../screens/TempItemPriceScreen";
 import TempUserSelectionScreen from "../screens/TempUserSelectionScreen";
+import TempResultScreen from "../screens/TempResultScreen";
 
 const Router = (props) => {
   const Stack = createStackNavigator();
@@ -56,6 +57,7 @@ const Router = (props) => {
           name="UserSelection"
           component={TempUserSelectionScreen}
         />
+        <Stack.Screen name="Results" component={TempResultScreen} />
       </Stack.Navigator>
     );
   };
