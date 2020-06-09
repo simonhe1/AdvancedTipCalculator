@@ -8,6 +8,7 @@ import {
   DECREMENT_ITEM_QUANTITY,
   MAP_ITEM_TO_USERS,
   CHANGE_ITEM_CHOICE,
+  RESET_ITEM,
 } from "../actions/types";
 
 const initialState = {
@@ -66,6 +67,10 @@ const itemReducer = (state = initialState, action) => {
     case GET_ITEM_PRICE:
       console.log("got item price");
       return state;
+    case RESET_ITEM:
+      return {
+        itemList: [],
+      };
     case DELETE_ITEM:
       return {
         ...state,

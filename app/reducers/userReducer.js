@@ -1,4 +1,9 @@
-import { ADD_USER, DELETE_USER, MAP_USER_TO_ITEMS } from "../actions/types";
+import {
+  ADD_USER,
+  DELETE_USER,
+  MAP_USER_TO_ITEMS,
+  RESET_USER,
+} from "../actions/types";
 
 const initialState = {
   userList: [],
@@ -27,6 +32,10 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         userList: mapUsers([...items], [...state.userList]),
+      };
+    case RESET_USER:
+      return {
+        userList: [],
       };
     default:
       return state;

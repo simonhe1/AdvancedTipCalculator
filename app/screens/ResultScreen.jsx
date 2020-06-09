@@ -7,13 +7,16 @@ import UserResultsContent from "../components/UserResultsContent";
 import { useNavigation } from "@react-navigation/native";
 import { connect } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
-import { mapUserToItems } from "../actions/users";
+import { mapUserToItems, resetUser } from "../actions/users";
+import { resetItem } from "../actions/items";
 
 const ResultScreen = ({
   users,
   items,
   gradientColorsBackground,
   mapUserToItems,
+  resetItem,
+  resetUser,
   tip,
   toggled,
 }) => {
@@ -29,6 +32,8 @@ const ResultScreen = ({
       headerRight: () => (
         <Button
           onPress={() => {
+            resetUser();
+            resetItem();
             navigation.popToTop();
           }}
           title="Done"
@@ -51,11 +56,14 @@ const ResultScreen = ({
               <UserResultsHeader
                 item={item}
                 expanded={expanded}
-                tipPercentage={tip}
+                tipPercentage={toggled ? tip : 0}
               />
             )}
             renderContent={(item) => (
-              <UserResultsContent item={item} tipPercentage={tip} />
+              <UserResultsContent
+                item={item}
+                tipPercentage={toggled ? tip : 0}
+              />
             )}
           />
         </View>
@@ -109,6 +117,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     mapUserToItems: (itemsArr) => dispatch(mapUserToItems(itemsArr)),
+    resetUser: () => dispatch(resetUser()),
+    resetItem: () => dispatch(resetItem()),
   };
 };
 

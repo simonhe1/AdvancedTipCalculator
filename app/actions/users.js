@@ -1,4 +1,4 @@
-import { ADD_USER, DELETE_USER, MAP_USER_TO_ITEMS } from "./types";
+import { ADD_USER, DELETE_USER, MAP_USER_TO_ITEMS, RESET_USER } from "./types";
 
 let nextUserId = 0;
 
@@ -21,5 +21,11 @@ export const mapUserToItems = (itemsArr) => {
   return {
     type: MAP_USER_TO_ITEMS,
     items: itemsArr,
+  };
+};
+
+export const resetUser = () => {
+  return {
+    type: RESET_USER,
   };
 };

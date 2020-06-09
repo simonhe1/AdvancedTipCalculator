@@ -5,7 +5,6 @@ import { getRandomColor } from "../config/randomColor";
 import colors from "../config/colors";
 import { useNavigation } from "@react-navigation/native";
 import { connect } from "react-redux";
-
 const HomeScreen = ({ gradientColorsBackground }) => {
   const navigation = useNavigation();
 

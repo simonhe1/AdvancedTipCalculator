@@ -8,6 +8,7 @@ import {
   DELETE_ITEM,
   MAP_ITEM_TO_USERS,
   CHANGE_ITEM_CHOICE,
+  RESET_ITEM,
 } from "./types";
 
 let nextItemId = 0;
@@ -75,5 +76,11 @@ export const changeItemChoice = (itemID, userID) => {
     type: CHANGE_ITEM_CHOICE,
     id: itemID,
     userID: userID,
+  };
+};
+
+export const resetItem = () => {
+  return {
+    type: RESET_ITEM,
   };
 };
