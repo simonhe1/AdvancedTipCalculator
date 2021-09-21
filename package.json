@@ -31,7 +31,7 @@
     "react-native-show-hide-toggle-box": "^1.0.1",
     "react-native-togglebox": "^1.0.3",
     "react-native-unimodules": "^0.9.1",
-    "react-native-web": "~0.11.7",
+    "react-native-web": "^0.17.1",
     "react-navigation": "^4.3.9",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
